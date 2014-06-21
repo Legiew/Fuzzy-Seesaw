@@ -1,0 +1,9 @@
+line {
+	stroke: black;
+	stroke-width: 2;
+}
+
+#ball {
+	fill: blue;
+	stroke: blue;
+}

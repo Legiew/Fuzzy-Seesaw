@@ -1,0 +1,8 @@
+- Max. Winkeländerung pro Zyklus beschränkbar und einstellbar
+- Masse Kugel einstellbar
+- Erdbeschleunigung einstellbar
+- Reibung einstellbar
+
+Links und Quellen:
+http://www.frustfrei-lernen.de/mechanik/geschwindigkeit-beschleunigung.html
+http://www.frustfrei-lernen.de/mechanik/schiefe-ebene-physik-mechanik.html
