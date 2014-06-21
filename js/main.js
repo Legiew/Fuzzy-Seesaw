@@ -76,9 +76,7 @@ var ballTouch2 =
 	.attr("r", 2) */
 	
 function paintSeesaw() {
-	seesaw
-	.transition()
-	.duration(deltaSimTime)
+	seesaw	
 	.attr("x1", svgWidth / 2 - Math.cos(toRadians(seesawAngle)) * seesawLength / 2)
 	.attr("x2", svgWidth / 2 + Math.cos(toRadians(seesawAngle)) * seesawLength / 2)
 	.attr("y1", svgHeight - standMargin - standSize - Math.sin(toRadians(seesawAngle)) * seesawLength / 2)
@@ -95,9 +93,7 @@ function paintBall() {
 	var ballPosX = ballTouchOnSeesawX - (Math.cos(toRadians(90 - seesawAngle * -1)) * (ballSize / 2));
 	var ballPosY = ballTouchOnSeesawY - (Math.sin(toRadians(90 - seesawAngle * -1)) * (ballSize / 2));
 	
-	ball
-	.transition()
-	.duration(deltaSimTime)
+	ball	
 	.attr("cx", ballPosX)
 	.attr("cy", ballPosY);
 	
@@ -128,7 +124,7 @@ $('#ballPosition').change(function() {
 
 function calcBall() {
 
-	var deltaTime = deltaSimTime / 500;
+	var deltaTime = deltaSimTime / 200;
 	
 	ballPosition = ballPosition + ballSpeed * deltaTime + 0.5 * ballAcceleration * deltaTime * deltaTime;
 	ballSpeed = ballSpeed + ballAcceleration * deltaTime;
@@ -150,7 +146,42 @@ function calcBall() {
 paintSeesaw();
 paintBall();
 
-setInterval(function() {	
+var obj = {
+	crisp_input: [150],
+	variables_input: [
+		{
+			name: "Ball Position",
+			setsName: ["Left", "Middle", "Right"],
+			sets: [
+				[0,0,0,250],
+				[0,250,250,500],
+				[250,500,500,500]
+			]
+		}		
+	],
+	variable_output: {
+		name: "Seesaw Angle",
+		setsName: ["Left", "Middle", "Right"],
+		sets: [
+			[0,0,0,45],
+			[0,45,45,90],
+			[45,90,90,90]
+		]
+	},
+	inferences: [
+		[0,1,2]
+	]
+};
+
+var fl = new FuzzyLogic();
+
+setInterval(function() {
+	paintSeesaw();
 	calcBall();
-	paintBall();
+	paintBall();	
+	
+	obj.crisp_input = [ballPosition + 250];
+	newSeesawAngle = fl.getResult(obj);
+	console.log(obj.crisp_input + " > " + newSeesawAngle);
+	seesawAngle = -(newSeesawAngle - 45);
 }, deltaSimTime);
