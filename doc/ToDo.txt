@@ -1,7 +1,9 @@
-- Max. Winkeländerung pro Zyklus beschränkbar und einstellbar
-- Masse Kugel einstellbar
+- (Done) Max. Winkeländerung pro Zyklus beschränkbar und einstellbar
 - Erdbeschleunigung einstellbar
 - Reibung einstellbar
+- (Done) Ort des Anhaltens einstellbar
+- Schatten zeichnen um Drehung zu verdeutlichen
+- (Done) Zahlen der Anzeige runden auf 2 Nachkommastellen
 
 Links und Quellen:
 http://www.frustfrei-lernen.de/mechanik/geschwindigkeit-beschleunigung.html

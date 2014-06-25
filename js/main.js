@@ -3,7 +3,7 @@ function toRadians (angle) {
 }
 
 var svgWidth = 800;
-var svgHeight = 600;
+var svgHeight = 400;
 
 var standSize = 30;
 
@@ -18,13 +18,13 @@ var ballAcceleration = 0;
 
 var ballSize = 20;
 
-var ballWeight = 3;
-
 var deltaSimTime = 25;
 
 var dontChangeSeesawAngleCounter = 0;
 
-var seesawAngleMaxDelta = 1;
+var seesawAngleMaxDelta = 0.2;
+
+var desiredBallPosition = 0;
 
 var svg =
 	d3.select("svg")	
@@ -80,11 +80,19 @@ var ballTouch2 =
 	.attr("r", 2) */
 	
 function paintSeesaw() {
+
+	var x1 = svgWidth / 2 - Math.cos(toRadians(seesawAngle)) * seesawLength / 2;
+	var x2 = svgWidth / 2 + Math.cos(toRadians(seesawAngle)) * seesawLength / 2;
+	var y1 = svgHeight - standMargin - standSize - Math.sin(toRadians(seesawAngle)) * seesawLength / 2;
+	var y2 = svgHeight - standMargin - standSize + Math.sin(toRadians(seesawAngle)) * seesawLength / 2;
+
+	//console.log(x1 + " " + x2 + " " + y1 + " " + y2);	
+	
 	seesaw	
-	.attr("x1", svgWidth / 2 - Math.cos(toRadians(seesawAngle)) * seesawLength / 2)
-	.attr("x2", svgWidth / 2 + Math.cos(toRadians(seesawAngle)) * seesawLength / 2)
-	.attr("y1", svgHeight - standMargin - standSize - Math.sin(toRadians(seesawAngle)) * seesawLength / 2)
-	.attr("y2", svgHeight - standMargin - standSize + Math.sin(toRadians(seesawAngle)) * seesawLength / 2);
+	.attr("x1", x1)
+	.attr("x2", x2)
+	.attr("y1", y1)
+	.attr("y2", y2);
 }
 
 function paintBall() {
@@ -95,7 +103,7 @@ function paintBall() {
 		+ Math.sin(toRadians(seesawAngle)) * ballPosition;
 	
 	var ballPosX = ballTouchOnSeesawX - (Math.cos(toRadians(90 - seesawAngle * -1)) * (ballSize / 2));
-	var ballPosY = ballTouchOnSeesawY - (Math.sin(toRadians(90 - seesawAngle * -1)) * (ballSize / 2));
+	var ballPosY = ballTouchOnSeesawY - (Math.sin(toRadians(90 - seesawAngle * -1)) * (ballSize / 2));	
 	
 	ball	
 	.attr("cx", ballPosX)
@@ -115,23 +123,25 @@ function paintBall() {
 }
 	
 $('#seesawAngle').change(function() {
-	seesawAngle = $('#seesawAngle').val();
+	seesawAngle = parseInt($('#seesawAngle').val());	
 	dontChangeSeesawAngleCounter = 25;
 });
 
-$('#ballPosition').change(function() {	
-	/* ballPosition = $('#ballPosition').val() / 100 * seesawLength;	
-	paintSeesaw();
-	paintBall(); */
+$('#desiredBallPosition').change(function() {	
+	desiredBallPosition = -$('#desiredBallPosition').val();
 });
 
 function calcBall() {
 
-	var deltaTime = deltaSimTime / 300;
+	var deltaTime = deltaSimTime / 150;
+	
+	console.log("Vorher: " + ballPosition + " " + ballSpeed + " " + ballAcceleration + " " + seesawAngle);
 	
 	ballPosition = ballPosition + ballSpeed * deltaTime + 0.5 * ballAcceleration * deltaTime * deltaTime;
 	ballSpeed = ballSpeed + ballAcceleration * deltaTime;
-	ballAcceleration = ballWeight * 9.81 * Math.sin(toRadians(seesawAngle));
+	ballAcceleration = 9.81 * Math.sin(toRadians(seesawAngle));
+	
+	console.log("Nachher: " + ballPosition + " " + ballSpeed + " " + ballAcceleration + " " + seesawAngle);
 	
 	if (ballPosition < -seesawLength / 2) {	
 		ballPosition = -seesawLength / 2;
@@ -156,29 +166,29 @@ var obj = {
 			name: "Ball Position",
 			setsName: ["Left", "Middle", "Right"],
 			sets: [
-				[0,0,0,250],
-				[0,250,250,500],
-				[250,500,500,500]
+				[-250,-250,-250,0],
+				[-250,0,0,250],
+				[0,250,250,250]
 			]
-		},		
+		},
 		{
 			name: "Ball Speed",
 			setsName: ["Negativ", "Zero", "Positiv"],
 			sets: [
-				[0,0,0,150],
-				[0,150,150,300],
-				[150,300,300,300]
+				[-40,-40,-20,0],
+				[-20,0,0,20],
+				[0,20,40,40]
 			]
 		},
 		{
 			name: "Ball Acceleration",
 			setsName: ["Negativ", "Zero", "Positiv"],
 			sets: [
-				[0,0,0,20],
-				[0,20,20,40],
-				[20,40,40,40]
+				[-7,-7,-7,0],
+				[-7,0,0,7],
+				[0,7,7,7]
 			]
-		}
+		}		
 	],
 	variable_output: {
 		name: "Seesaw Angle",
@@ -198,27 +208,35 @@ var obj = {
 
 var fl = new FuzzyLogic();
 
-setInterval(function() {
-	paintSeesaw();
+setInterval(function() {	
 	calcBall();
+	paintSeesaw();
 	paintBall();	
 	
-	obj.crisp_input = [ballPosition + 250, ballSpeed + 150, ballAcceleration + 20];
-	newSeesawAngle = fl.getResult(obj);
-	console.log(obj.crisp_input + " > " + newSeesawAngle);		
+	obj.variables_input[0].sets = [
+				[-250 - desiredBallPosition,-250 - desiredBallPosition,-250 - desiredBallPosition,0 - desiredBallPosition],
+				[-250 - desiredBallPosition,0 - desiredBallPosition,0 - desiredBallPosition,250 - desiredBallPosition],
+				[0 - desiredBallPosition,250 - desiredBallPosition,250 - desiredBallPosition,250 - desiredBallPosition]
+			];
+	
+	//obj.crisp_input = [ballPosition + 250, ballSpeed + 150, ballAcceleration + 20];
+	obj.crisp_input = [ballPosition, ballSpeed, ballAcceleration];
+	newSeesawAngle = fl.getResult(obj);			
 	
 	if (dontChangeSeesawAngleCounter == 0) {	
 		
-		newSeesawAngle = -(newSeesawAngle - 45);		
+		newSeesawAngle = -(newSeesawAngle - 45);
+
+		console.log(obj.crisp_input + " > " + newSeesawAngle);		
 		
-		/* if (Math.abs(newSeesawAngle - seesawAngle) > seesawAngleMaxDelta) {
+		if (Math.abs(newSeesawAngle - seesawAngle) > seesawAngleMaxDelta) {
 		
 			if (newSeesawAngle > seesawAngle)
 				newSeesawAngle = seesawAngle + seesawAngleMaxDelta;
 				
 			if (newSeesawAngle < seesawAngle)
 				newSeesawAngle = seesawAngle - seesawAngleMaxDelta;					
-		} */
+		}
 		
 		seesawAngle = newSeesawAngle;
 	}
@@ -228,9 +246,11 @@ setInterval(function() {
 }, deltaSimTime);
 
 setInterval(function() {
-	$('#position').val(ballPosition);
-	$('#speed').val(ballSpeed);
-	$('#acceleration').val(ballAcceleration);
-	$('#angle').val(seesawAngle);
+	$('#position').val(ballPosition.toFixed(2));
+	$('#speed').val(ballSpeed.toFixed(2));
+	$('#acceleration').val(ballAcceleration.toFixed(2));
+	$('#angle').val(seesawAngle.toFixed(2));
+	$('#seesawAngle').val(Math.round(seesawAngle));
+	$('#desiredBallPositionDisplay').val(-desiredBallPosition);	
 }, 250);
 
