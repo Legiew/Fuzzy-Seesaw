@@ -4,6 +4,7 @@
 - (Done) Ort des Anhaltens einstellbar
 - Schatten zeichnen um Drehung zu verdeutlichen
 - (Done) Zahlen der Anzeige runden auf 2 Nachkommastellen
+- Der Ball braucht ein Gewicht
 
 Links und Quellen:
 http://www.frustfrei-lernen.de/mechanik/geschwindigkeit-beschleunigung.html
