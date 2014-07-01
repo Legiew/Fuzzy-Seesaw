@@ -145,14 +145,16 @@ function calcBall() {
 	
 	if (ballPosition < -seesawLength / 2) {	
 		ballPosition = -seesawLength / 2;
-		ballSpeed = 0;
-		ballAcceleration = 0;
+	    //TODO: Add correct value
+		ballSpeed = -ballSpeed * .5;
+		ballAcceleration = -ballAcceleration;
 	}
 		
 	if (ballPosition > seesawLength / 2) {
-		ballPosition = seesawLength / 2;
-		ballSpeed = 0;
-		ballAcceleration = 0;
+	    ballPosition = seesawLength / 2;
+        //TODO: Add correct value
+		ballSpeed = -ballSpeed * .5;
+		ballAcceleration = -ballAcceleration;
 	}
 }
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">        
@@ -12,18 +12,24 @@
 		<script src="js/libs/jquery-2.1.1.js"></script>
         <script src="js/libs/d3.js"></script>
 		<script src="js/libs/fuzzy.js"></script>
+        <style type="text/css">
+            span{
+                width:200px;
+                display: inline-block;
+            }
+        </style>
     </head>
     <body>
         <h1>Fuzzy Seesaw - WBM Projekt SS 2014 (Cziesla, Weigel)</h1>
 		<svg></svg>
 		<br />
-		<label>Seesaw Angle: <input id="seesawAngle" type="range" min="-45" max="45" step="1" value="0"/></label><br /><br />		
-		<label>Desired Ball Position: <input id="desiredBallPosition" type="range" min="-250" max="250" step="5" value="0"/></label><br /><br />
-		<label>Desired Ball Position: <input id="desiredBallPositionDisplay" type="text" /></label><br /><br />
-		<label>Ball Position: <input id="position" type="text" /></label><br /><br />
-		<label>Speed: <input id="speed" type="text" /></label><br /><br />
-		<label>Acceleration: <input id="acceleration" type="text" /></label><br /><br />
-		<label>Angle: <input id="angle" type="text" /></label>
+        <label><span>Seesaw Angle: </span><input id="seesawAngle" type="range" min="-45" max="45" step="1" value="0" /></label><br /><br />		
+		<label><span>Desired Ball Position: </span><input id="desiredBallPosition" type="range" min="-250" max="250" step="5" value="0"/></label><br /><br />
+		<label><span>Desired Ball Position: </span><input id="desiredBallPositionDisplay" type="text" /></label><br /><br />
+		<label><span>Ball Position: </span><input id="position" type="text" /></label><br /><br />
+		<label><span>Speed: </span><input id="speed" type="text" /></label><br /><br />
+		<label><span>Acceleration: </span><input id="acceleration" type="text" /></label><br /><br />
+		<label><span>Angle: </span><input id="angle" type="text" /></label>
 		
 		<script src="js/main.js"></script>		
     </body>
