@@ -26,6 +26,8 @@ var seesawAngleMaxDelta = 0.2;
 
 var desiredBallPosition = 0;
 
+var calcTicker = 0;
+
 var svg =
 	d3.select("svg")
 	.attr("id", "screen")
@@ -62,6 +64,13 @@ var ball =
 	svg.append("circle")
 	.attr("id", "ball")
 	.attr("r", ballSize / 2);
+
+var desiredBallPositionLine =
+    svg.append("line")
+    .attr("x1", svgWidth / 2)
+	.attr("x2", svgWidth / 2)
+	.attr("y1", svgHeight - standMargin)
+	.attr("y2", svgHeight - standMargin + 15);
 
 /* var ballTouch =
 	svg.append("circle")	
@@ -129,19 +138,25 @@ $('#seesawAngle').change(function () {
 
 $('#desiredBallPosition').change(function () {
     desiredBallPosition = -$('#desiredBallPosition').val();
+    console.log(desiredBallPosition);
+    console.log(svgWidth / 2);
+    desiredBallPositionLine
+        .attr("x1", svgWidth / 2 - desiredBallPosition)
+        .attr("x2", svgWidth / 2 - desiredBallPosition);
+    console.log("dbp", "x1", desiredBallPosition - svgWidth / 2, svgWidth / 2);
 });
 
 function calcBall() {
 
     var deltaTime = deltaSimTime / 150;
 
-    console.log("Vorher: " + ballPosition + " " + ballSpeed + " " + ballAcceleration + " " + seesawAngle);
+    //console.log("Vorher: " + ballPosition + " " + ballSpeed + " " + ballAcceleration + " " + seesawAngle);
 
     ballPosition = ballPosition + ballSpeed * deltaTime + 0.5 * ballAcceleration * deltaTime * deltaTime;
     ballSpeed = ballSpeed + ballAcceleration * deltaTime;
     ballAcceleration = 9.81 * Math.sin(toRadians(seesawAngle));
 
-    console.log("Nachher: " + ballPosition + " " + ballSpeed + " " + ballAcceleration + " " + seesawAngle);
+    //console.log("Nachher: " + ballPosition + " " + ballSpeed + " " + ballAcceleration + " " + seesawAngle);
 
     if (ballPosition < -seesawLength / 2) {
         ballPosition = -seesawLength / 2;
@@ -211,7 +226,10 @@ var obj = {
 var fl = new FuzzyLogic();
 
 setInterval(function () {
+    //if (calcTicker++ % 4 == 0) {
     calcBall();
+    //calcTicker = 1;
+    //}
     paintSeesaw();
     paintBall();
 
@@ -229,7 +247,7 @@ setInterval(function () {
 
         newSeesawAngle = -(newSeesawAngle - 45);
 
-        console.log(obj.crisp_input + " > " + newSeesawAngle);
+        //console.log(obj.crisp_input + " > " + newSeesawAngle);
 
         if (Math.abs(newSeesawAngle - seesawAngle) > seesawAngleMaxDelta) {
 
@@ -255,4 +273,3 @@ setInterval(function () {
     $('#seesawAngle').val(Math.round(seesawAngle));
     $('#desiredBallPositionDisplay').val(-desiredBallPosition);
 }, 250);
-
