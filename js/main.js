@@ -72,30 +72,12 @@ var desiredBallPositionLine =
 	.attr("y1", svgHeight - standMargin)
 	.attr("y2", svgHeight - standMargin + 15);
 
-/* var ballTouch =
-	svg.append("circle")	
-	.attr("cx", svgWidth / 2)
-	.attr("cy", svgHeight - standMargin - standSize)
-	.attr("stroke", "red")
-	.attr("fill", "red")
-	.attr("r", 2)
-	
-var ballTouch2 =
-	svg.append("circle")	
-	.attr("cx", svgWidth / 2)
-	.attr("cy", svgHeight - standMargin - standSize)
-	.attr("stroke", "red")
-	.attr("fill", "red")
-	.attr("r", 2) */
-
 function paintSeesaw() {
 
     var x1 = svgWidth / 2 - Math.cos(toRadians(seesawAngle)) * seesawLength / 2;
     var x2 = svgWidth / 2 + Math.cos(toRadians(seesawAngle)) * seesawLength / 2;
     var y1 = svgHeight - standMargin - standSize - Math.sin(toRadians(seesawAngle)) * seesawLength / 2;
     var y2 = svgHeight - standMargin - standSize + Math.sin(toRadians(seesawAngle)) * seesawLength / 2;
-
-    //console.log(x1 + " " + x2 + " " + y1 + " " + y2);	
 
     seesaw
 	.attr("x1", x1)
@@ -116,19 +98,7 @@ function paintBall() {
 
     ball
 	.attr("cx", ballPosX)
-	.attr("cy", ballPosY);
-
-    /* ballTouch
-	.transition()
-	.duration(deltaSimTime)
-	.attr("cx", ballTouchOnSeesawX)
-	.attr("cy", ballTouchOnSeesawY);
-	
-	ballTouch2
-	.transition()
-	.duration(deltaSimTime)
-	.attr("cx", ballPosX)
-	.attr("cy", ballPosY); */
+	.attr("cy", ballPosY);   
 }
 
 $('#seesawAngle').change(function () {
@@ -148,15 +118,11 @@ $('#desiredBallPosition').change(function () {
 
 function calcBall() {
 
-    var deltaTime = deltaSimTime / 150;
-
-    //console.log("Vorher: " + ballPosition + " " + ballSpeed + " " + ballAcceleration + " " + seesawAngle);
+    var deltaTime = deltaSimTime / 150;   
 
     ballPosition = ballPosition + ballSpeed * deltaTime + 0.5 * ballAcceleration * deltaTime * deltaTime;
     ballSpeed = ballSpeed + ballAcceleration * deltaTime;
-    ballAcceleration = 9.81 * Math.sin(toRadians(seesawAngle));
-
-    //console.log("Nachher: " + ballPosition + " " + ballSpeed + " " + ballAcceleration + " " + seesawAngle);
+    ballAcceleration = 9.81 * Math.sin(toRadians(seesawAngle));    
 
     if (ballPosition < -seesawLength / 2) {
         ballPosition = -seesawLength / 2;
@@ -226,10 +192,9 @@ var obj = {
 var fl = new FuzzyLogic();
 
 setInterval(function () {
-    //if (calcTicker++ % 4 == 0) {
+ 
     calcBall();
-    //calcTicker = 1;
-    //}
+    
     paintSeesaw();
     paintBall();
 
@@ -238,16 +203,13 @@ setInterval(function () {
 				[-250 - desiredBallPosition, 0 - desiredBallPosition, 0 - desiredBallPosition, 250 - desiredBallPosition],
 				[0 - desiredBallPosition, 250 - desiredBallPosition, 250 - desiredBallPosition, 250 - desiredBallPosition]
     ];
-
-    //obj.crisp_input = [ballPosition + 250, ballSpeed + 150, ballAcceleration + 20];
+    
     obj.crisp_input = [ballPosition, ballSpeed, ballAcceleration];
     newSeesawAngle = fl.getResult(obj);
 
     if (dontChangeSeesawAngleCounter == 0) {
 
-        newSeesawAngle = -(newSeesawAngle - 45);
-
-        //console.log(obj.crisp_input + " > " + newSeesawAngle);
+        newSeesawAngle = -(newSeesawAngle - 45);       
 
         if (Math.abs(newSeesawAngle - seesawAngle) > seesawAngleMaxDelta) {
 
