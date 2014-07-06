@@ -19,6 +19,9 @@ span {
 }
 
 input {
-	width:200px;
 	height:24px;
+}
+
+input[type="range"] {
+	width:200px;	
 }

@@ -26,7 +26,7 @@ var seesawAngleMaxDelta = 0.2;
 
 var desiredBallPosition = 0;
 
-var calcTicker = 0;
+var gravity = false;
 
 var svg =
 	d3.select("svg")
@@ -114,6 +114,10 @@ $('#desiredBallPosition').change(function () {
         .attr("x1", svgWidth / 2 - desiredBallPosition)
         .attr("x2", svgWidth / 2 - desiredBallPosition);
     console.log("dbp", "x1", desiredBallPosition - svgWidth / 2, svgWidth / 2);
+});
+
+$('#gravity').change(function () {
+    gravity = $('#gravity').prop('checked');
 });
 
 function calcBall() {
@@ -206,25 +210,38 @@ setInterval(function () {
     
     obj.crisp_input = [ballPosition, ballSpeed, ballAcceleration];
     newSeesawAngle = fl.getResult(obj);
+	
+	if (gravity && ballPosition > 0) {
+		seesawAngle = seesawAngle + (seesawAngleMaxDelta * 0.2);
+	}
+	
+	if (gravity && ballPosition < 0) {
+		seesawAngle = seesawAngle - (seesawAngleMaxDelta * 0.2);
+	}
+	
+	if (!gravity 
+		|| Math.abs(ballPosition + desiredBallPosition) > 15
+		|| Math.abs(ballSpeed) > 2
+		|| Math.abs(ballAcceleration) > 1) {
+	
+		if (dontChangeSeesawAngleCounter == 0) {
 
-    if (dontChangeSeesawAngleCounter == 0) {
+			newSeesawAngle = -(newSeesawAngle - 45);
 
-        newSeesawAngle = -(newSeesawAngle - 45);
+			if (Math.abs(newSeesawAngle - seesawAngle) > seesawAngleMaxDelta) {
 
-        if (Math.abs(newSeesawAngle - seesawAngle) > seesawAngleMaxDelta) {
+				if (newSeesawAngle > seesawAngle)
+					newSeesawAngle = seesawAngle + seesawAngleMaxDelta;
 
-            if (newSeesawAngle > seesawAngle)
-                newSeesawAngle = seesawAngle + seesawAngleMaxDelta;
+				if (newSeesawAngle < seesawAngle)
+					newSeesawAngle = seesawAngle - seesawAngleMaxDelta;
+			}
 
-            if (newSeesawAngle < seesawAngle)
-                newSeesawAngle = seesawAngle - seesawAngleMaxDelta;
-        }
-
-        seesawAngle = newSeesawAngle;
-    }
-    else
-        dontChangeSeesawAngleCounter--;
-
+			seesawAngle = newSeesawAngle;
+		}
+		else
+			dontChangeSeesawAngleCounter--;
+	}
 }, deltaSimTime);
 
 setInterval(function () {
