@@ -98,7 +98,7 @@ function paintBall() {
 
     ball
 	.attr("cx", ballPosX)
-	.attr("cy", ballPosY);   
+	.attr("cy", ballPosY);
 }
 
 $('#seesawAngle').change(function () {
@@ -118,11 +118,11 @@ $('#desiredBallPosition').change(function () {
 
 function calcBall() {
 
-    var deltaTime = deltaSimTime / 150;   
+    var deltaTime = deltaSimTime / 150;
 
     ballPosition = ballPosition + ballSpeed * deltaTime + 0.5 * ballAcceleration * deltaTime * deltaTime;
     ballSpeed = ballSpeed + ballAcceleration * deltaTime;
-    ballAcceleration = 9.81 * Math.sin(toRadians(seesawAngle));    
+    ballAcceleration = 9.81 * Math.sin(toRadians(seesawAngle));
 
     if (ballPosition < -seesawLength / 2) {
         ballPosition = -seesawLength / 2;
@@ -209,7 +209,7 @@ setInterval(function () {
 
     if (dontChangeSeesawAngleCounter == 0) {
 
-        newSeesawAngle = -(newSeesawAngle - 45);       
+        newSeesawAngle = -(newSeesawAngle - 45);
 
         if (Math.abs(newSeesawAngle - seesawAngle) > seesawAngleMaxDelta) {
 
