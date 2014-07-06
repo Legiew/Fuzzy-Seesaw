@@ -266,10 +266,10 @@ setInterval(function () {
 }, deltaSimTime);
 
 setInterval(function () {
-    $('#position').val(ballPosition.toFixed(2));
-    $('#speed').val(ballSpeed.toFixed(2));
-    $('#acceleration').val(ballAcceleration.toFixed(2));
-    $('#angle').val(seesawAngle.toFixed(2));
+    $('#position').text(ballPosition.toFixed(2));
+    $('#speed').text(ballSpeed.toFixed(2));
+    $('#acceleration').text(ballAcceleration.toFixed(2));
+    $('#angle').text(seesawAngle.toFixed(2));
     $('#seesawAngle').val(Math.round(seesawAngle));
-    $('#desiredBallPositionDisplay').val(-desiredBallPosition);
+    $('#desiredBallPositionDisplay').text(-desiredBallPosition);
 }, 250);

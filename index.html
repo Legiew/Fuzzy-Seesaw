@@ -11,30 +11,19 @@
 
 		<script src="js/libs/jquery-2.1.1.js"></script>
         <script src="js/libs/d3.js"></script>
-		<script src="js/libs/fuzzy.js"></script>
-        <style type="text/css">
-            span{
-                width:200px;
-                height: 24px;
-                display: inline-block;
-            }
-            input{
-                width:200px;
-                height:24px;
-            }
-        </style>
+		<script src="js/libs/fuzzy.js"></script>        
     </head>
     <body>
         <h1>Fuzzy Seesaw - WBM Projekt SS 2014 (Cziesla, Weigel)</h1>
 		<svg></svg>
 		<br />
-        <label><span>Seesaw Angle: </span><input id="seesawAngle" type="range" min="-45" max="45" step="1" value="0" /></label><br /><br />		
-		<label><span>Desired Ball Position: </span><input id="desiredBallPosition" type="range" min="-250" max="250" step="5" value="0"/></label><br /><br />
-		<label><span>Desired Ball Position: </span><input id="desiredBallPositionDisplay" type="text" /></label><br /><br />
-		<label><span>Ball Position: </span><input id="position" type="text" /></label><br /><br />
-		<label><span>Speed: </span><input id="speed" type="text" /></label><br /><br />
-		<label><span>Acceleration: </span><input id="acceleration" type="text" /></label><br /><br />
-		<label><span>Angle: </span><input id="angle" type="text" /></label>
+        <label><span>Seesaw Angle: </span><input id="seesawAngle" type="range" min="-45" max="45" step="1" value="0" /></label><br />
+		<span></span><span id="angle"></span><br /><br />
+		<label><span>Desired Ball Position: </span><input id="desiredBallPosition" type="range" min="-250" max="250" step="5" value="0"/></label><br />
+		<span></span><span id="desiredBallPositionDisplay"></span><br /><br /><br />
+		<span>Ball Position:</span><span id="position"></span><br /><br />
+		<span>Speed: </span><span id="speed"></span><br /><br />
+		<span>Acceleration: </span><span id="acceleration"></span><br /><br />
 		
 		<script src="js/main.js"></script>		
     </body>

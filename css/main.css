@@ -11,3 +11,14 @@ line {
 	fill: blue;
 	stroke: blue;
 }
+
+span {
+	width:200px;
+	height: 24px;
+	display: inline-block;
+}
+
+input {
+	width:200px;
+	height:24px;
+}
